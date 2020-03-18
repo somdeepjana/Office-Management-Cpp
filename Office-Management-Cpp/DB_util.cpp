@@ -1,12 +1,13 @@
-
-
 #include "DB_util.h"
 
 #include <SQLAPI.h>
 
 
+
+
+
 //DB_util constructure
-DB_util::DB_util(const std::string& server_location, const std::string& user_id, const std::string& user_password, const std::string& db_name)
+DB_util::DB_util(const std::string server_location, const std::string user_id, const std::string user_password, const std::string db_name)
 {
 	std::string connection_string = server_location + "@" + db_name;
 	this->mysql_connection = new SAConnection;
@@ -16,11 +17,15 @@ DB_util::DB_util(const std::string& server_location, const std::string& user_id,
 	this->mysql_command->setConnection(mysql_connection);
 }
 
+//Void constructure
+DB_util::DB_util()
+	:DB_util("localhost", "root", "toor", "mobilerechargestore"){}
+
 //DB_util Destructure
 DB_util::~DB_util()
 {
-
-	delete this->mysql_command;
+	this->mysql_connection->Disconnect();
+	delete this->mysql_connection;
 }
 
 //DB_util mysql_query implimentation

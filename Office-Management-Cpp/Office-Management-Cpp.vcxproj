@@ -153,10 +153,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cl_ui.cpp" />
     <ClCompile Include="DB_util.cpp" />
     <ClCompile Include="Office-Management-Cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cl_ui.h" />
     <ClInclude Include="DB_util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

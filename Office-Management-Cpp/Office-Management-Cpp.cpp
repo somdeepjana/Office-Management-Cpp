@@ -4,24 +4,21 @@
 
 #include "DB_util.h"
 
+//Diapla Funcions prototype;
 void view_table(SACommand* table_data);
+
 
 int main()
 {
-    std::string locaton{ "localhost" };
-    std::string db_name{ "mobilerechargestore" };
-
-    std::string user_id{ "root" };
-    std::string password{ "Conan@1887Doyle" };
-    
-    std::string query{ "show tables" };
-
-    DB_util* mysql_portal = new DB_util(locaton, user_id, password, db_name);
-
     std::cout << "Office Management System\n";
 
+    DB_util* mysql_portal = new DB_util();
+
     
-    view_table(mysql_portal->mysql_query(query));
+
+    
+    view_table(mysql_portal->mysql_query("select * from coupons"));
+
 
     delete mysql_portal;
 }
@@ -29,11 +26,21 @@ int main()
 void view_table(SACommand* table_data)
 {
     int col_count = table_data->FieldCount();
+
+    for (int i = 1; i <= col_count; i++) {
+        printf("%20s\t", table_data->Field(i).Name());
+    }
+
+    std::cout << std::endl << std::string((col_count+1) * 20, '-')<<std::endl;
+
     while (table_data->FetchNext())
     {
         for (int i = 1; i <= col_count; i++) {
-            printf("%s\t", table_data->Field(i).asString());
+            printf("%20s\t", table_data->Field(i).asString());
         }
         std::cout<<std::endl;
     }
+    table_data = nullptr;
+    delete table_data;
 }
+

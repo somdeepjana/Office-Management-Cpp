@@ -13,7 +13,8 @@ public:
 
 
 	//Inetialiizing Constructure
-	DB_util(const std::string& server_location, const std::string& user_id, const std::string& user_password, const std::string& db_name);
+	DB_util();
+	DB_util(const std::string server_location, const std::string user_id, const std::string user_password, const std::string db_name);
 	//Destructure
 	~DB_util();
 
