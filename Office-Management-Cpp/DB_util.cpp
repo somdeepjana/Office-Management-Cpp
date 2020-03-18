@@ -2,30 +2,31 @@
 
 #include "DB_util.h"
 
-#include <mysql/jdbc.h>
+#include <SQLAPI.h>
 
 
 //DB_util constructure
-DB_util::DB_util(char* server_location, char* user_id, char* user_password, char* db_name)
+DB_util::DB_util(const std::string& server_location, const std::string& user_id, const std::string& user_password, const std::string& db_name)
 {
-	this->mysql_driver = get_driver_instance();
-	this->mysql_connection = mysql_driver->connect(server_location, user_id, user_password);
+	std::string connection_string = server_location + "@" + db_name;
+	this->mysql_connection = new SAConnection;
+	this->mysql_connection->Connect(connection_string.c_str(), user_id.c_str(), user_password.c_str(), SA_MySQL_Client);
 
-	this->mysql_connection->setSchema(db_name);
-	this->mysql_statement = this->mysql_connection->createStatement();
+	this->mysql_command = new SACommand;
+	this->mysql_command->setConnection(mysql_connection);
 }
 
 //DB_util Destructure
 DB_util::~DB_util()
 {
-	delete this->mysql_resultset;
-	delete this->mysql_statement;
-	delete this->mysql_connection;
+
+	delete this->mysql_command;
 }
 
 //DB_util mysql_query implimentation
-sql::ResultSet* DB_util::mysql_query(char* query_string)
+SACommand* DB_util::mysql_query(const std::string query_string)
 {
-	this->mysql_resultset= this->mysql_statement->executeQuery(query_string);
-	return this->mysql_resultset;
+	this->mysql_command->setCommandText(query_string.c_str());
+	this->mysql_command->Execute();
+	return this->mysql_command;
 }
