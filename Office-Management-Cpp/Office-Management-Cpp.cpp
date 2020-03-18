@@ -1,20 +1,43 @@
-// Office-Management-Cpp.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+
+#include <mysql/jdbc.h>
+
+#include "DB_util.h"
+
+void view_table(sql::ResultSet* table_data);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    char server_location[]{ "tcp://127.0.0.1:3306" };
+    char user_id[]{ "root" };
+    char password[]{ "Conan@1887Doyle" };
+    char db_name[]{ "mobilerechargestore" };
+    char query[]{ "SELECT 'Hello World!' AS _message" };
+
+    DB_util* mysql_portal = new DB_util(server_location, user_id, password, db_name);
+
+    std::cout << "Office Management System\n";
+
+    
+    view_table(mysql_portal->mysql_query(query));
+
+    delete mysql_portal;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void view_table(sql::ResultSet* table_data)
+{
+    //sql::ResultSetMetaData* metadata = table_data->getMetaData();
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    //int col_no = metadata->getColumnCount();
+    //std::cout << "Column No= " << col_no << std::endl;
+
+    while (table_data->next())
+    {
+        //for (int i = 1; i <= col_no; i++) {
+        std::string result= table_data->getString("_message");
+
+        std::cout << result;
+        //}
+        std::cout<<std::endl;
+    }
+}
