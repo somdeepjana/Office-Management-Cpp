@@ -3,6 +3,7 @@
 #include <SQLAPI.h>
 
 #include "DB_util.h"
+#include "Cl_ui.h"
 
 //Diapla Funcions prototype;
 void view_table(SACommand* table_data);
@@ -10,16 +11,19 @@ void view_table(SACommand* table_data);
 
 int main()
 {
-    std::cout << "Office Management System\n";
+    //std::cout << "Office Management System\n";
 
+    Cl_ui* ui_portal = new Cl_ui;
     DB_util* mysql_portal = new DB_util();
 
     
 
     
-    view_table(mysql_portal->mysql_query("select * from coupons"));
+    ui_portal->main_menu();
 
+    //view_table(mysql_portal->mysql_query("select * from coupons"));
 
+    delete ui_portal;
     delete mysql_portal;
 }
 

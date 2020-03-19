@@ -2,7 +2,10 @@
 
 #include <SQLAPI.h>
 
-
+#define SERVER_LOCATON "localhost"
+#define USER_ID "root"
+#define USER_PASSWORD "toor"
+#define OPERATONAL_DB "mobilerechargestore"
 
 
 
@@ -19,7 +22,7 @@ DB_util::DB_util(const std::string server_location, const std::string user_id, c
 
 //Void constructure
 DB_util::DB_util()
-	:DB_util("localhost", "root", "toor", "mobilerechargestore"){}
+	:DB_util(SERVER_LOCATON, USER_ID, USER_PASSWORD, OPERATONAL_DB){}
 
 //DB_util Destructure
 DB_util::~DB_util()
