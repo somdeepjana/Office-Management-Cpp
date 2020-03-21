@@ -1,0 +1,3 @@
+//----for viwing data
+
+SELECT employee_data.employee_id AS 'Employee ID', employee_data.employee_name AS 'Employee Name', employee_data.mobile_no AS 'Mobile No.', employee_data.joininng_date AS 'Joining Date', departments.department_name AS 'Department Name', employee_data.addreess AS 'Address', projects.project_name AS 'Current Project Name', projects.project_date AS 'Project Date', projects.project_details AS 'Project Details', projects.project_head AS 'Project Head' FROM employee_data INNER JOIN departments ON employee_data.department_id = departments.departmrent_id INNER JOIN project_to_employeee ON employee_data.employee_id = project_to_employeee.employee_id INNER JOIN projects ON project_to_employeee.project_id = projects.project_id;

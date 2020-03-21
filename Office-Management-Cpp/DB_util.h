@@ -27,5 +27,13 @@ public:
 	//Utility Function
 	SACommand* mysql_query(const std::string query_string);
 
+	//starting the connection;
+	void open_portal();
+
+	//delleting the cop constructor and assignment operator
+	DB_util(const DB_util& source) = delete;
+	DB_util& operator = (const DB_util& source) = delete;
+
+
 };
 
