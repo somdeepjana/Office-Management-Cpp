@@ -29,11 +29,17 @@ public:
 
 	//starting the connection;
 	void open_portal();
+	void default_address();
+
+	//setters
+	void set_server_location(const std::string& server_location);
+	void set_db_name(const std::string& db_name);
+	void set_user_id(const std::string& user_id);
+	void set_user_password(const std::string& user_password);
 
 	//delleting the cop constructor and assignment operator
 	DB_util(const DB_util& source) = delete;
 	DB_util& operator = (const DB_util& source) = delete;
-
 
 };
 

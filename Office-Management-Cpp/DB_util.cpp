@@ -39,10 +39,18 @@ DB_util::~DB_util()
 //opening the dbms  connection
 void DB_util::open_portal() {
     std::string connection_string = this->server_location + "@" + this->db_name;
-    if (!this->mysql_connection->isAlive()) {
-        this->mysql_connection->Connect(connection_string.c_str(), this->user_id.c_str(), this->user_password.c_str(), SA_MySQL_Client);
+
+    if (this->mysql_connection->isAlive()) {
+        this->mysql_connection->Disconnect();
     }
-    
+    this->mysql_connection->Connect(connection_string.c_str(), this->user_id.c_str(), this->user_password.c_str(), SA_MySQL_Client);
+}
+
+void DB_util::default_address() {
+    this->server_location = SERVER_LOCATON;
+    this->db_name = OPERATONAL_DB;
+    this->user_id = USER_ID;
+    this->user_password = USER_PASSWORD;
 }
 
 //DB_util mysql_query implimentation
@@ -60,30 +68,16 @@ SACommand* DB_util::mysql_query(const std::string query_string)
 	return this->mysql_command;
 }
 
-/*
-try
-{
-
+//all setters
+void DB_util::set_server_location(const std::string& server_location) {
+    this->server_location = server_location;
 }
-catch(SAException &e)
-{
-
-	ui_portal->heading("Error in Quiring");
-    std::cout << std::endl << std::endl;
-    ui_portal->start_margin(' ', ' ', 'f');
-    std::cout.write(e.ErrText(), std::strlen(e.ErrText()));
-    std::cout << std::endl;
-    ui_portal->ask_for_input("ENTER to Try-Agan or ESC to go-back ", ':', 'f');
-    std::cout << std::endl << std::endl;
-    ui_portal->seperation_line();
-
-    if (_getch() == '\r') {
-        continue;
-    }
-    else
-    {
-        break;
-    }
+void DB_util::set_db_name(const std::string& db_name) {
+    this->db_name = db_name;
 }
-
-*/
+void DB_util::set_user_id(const std::string& user_id) {
+    this->user_id = user_id;
+}
+void DB_util::set_user_password(const std::string& user_password) {
+    this->user_password = user_password;
+}

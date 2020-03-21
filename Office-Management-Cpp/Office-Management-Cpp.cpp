@@ -13,49 +13,47 @@ int main_menu_controller(Cl_ui* );
 void add_employee_controller(Cl_ui* , DB_util* );
 std::string view_employee_controller(Cl_ui*, DB_util*);
 void delete_employee_controller(Cl_ui*, DB_util*);
+bool db_logn_menu(Cl_ui* ui_portal, DB_util* mysql_portal);
 
 int main()
 {
-    //std::cout << "Office Management System\n";
 
     Cl_ui* ui_portal = new Cl_ui;
     DB_util* mysql_portal = new DB_util();
-
-    mysql_portal->open_portal();
-
-    //ui_portal->employee_profile(mysql_portal->mysql_query("select * from employee_data where employee_id= 'e001'"));
-    //system("pause");
     
-    while (true)
-    {
+    if (db_logn_menu(ui_portal, mysql_portal)) {
 
-        switch (main_menu_controller(ui_portal))
+        while (true)
         {
-        case 1:
 
-            add_employee_controller(ui_portal, mysql_portal);
-            break;
-        case 2:
+            switch (main_menu_controller(ui_portal))
+            {
+            case 1:
 
-            view_employee_controller(ui_portal, mysql_portal);
-            break;
-        case 3:
-            delete_employee_controller(ui_portal, mysql_portal);
+                add_employee_controller(ui_portal, mysql_portal);
+                break;
+            case 2:
 
-            break;
-        default:
-            break;
+                view_employee_controller(ui_portal, mysql_portal);
+                break;
+            case 3:
+                delete_employee_controller(ui_portal, mysql_portal);
+
+                break;
+            default:
+                break;
+            }
         }
     }
+    else {
 
-
-    //ui_portal->main_menu();
-
-    ui_portal->view_employ_list(mysql_portal->mysql_query("select * from employee_data"));
-
-    ui_portal->employee_profile(mysql_portal->mysql_query("select * from employee_data"));
-
-    //view_table(mysql_portal->mysql_query("select * from employee_data"));
+        std::cout << std::endl << std::endl;
+        ui_portal->heading("Cannot Connect to Database");
+        ui_portal->ask_for_input("Eneter any key to EXIT", ':', 'f');
+        std::cout << std::endl << std::endl << std::endl;
+        ui_portal->seperation_line();
+        _getch();
+    }
 
     delete ui_portal;
     delete mysql_portal;
@@ -209,4 +207,74 @@ void delete_employee_controller(Cl_ui* ui_portal, DB_util* mysql_portal) {
 
         mysql_portal->mysql_query("DELETE FROM employee_data WHERE employee_id= '" + employee_id + "'");
     }
+}
+
+bool db_logn_menu(Cl_ui* ui_portal, DB_util* mysql_portal) {
+
+    while (true) {
+        system("cls");
+
+        std::string server_location{};
+        std::string db_name{};
+        std::string user_id{};
+        std::string user_password{};
+
+        std::cout << std::endl << std::endl;
+        ui_portal->heading("Database Logn");
+
+        ui_portal->ask_for_input("Server Location", ':', 'h');
+        std::getline(std::cin, server_location);
+        if (server_location != "") {
+
+            std::cout << std::endl << std::endl;
+            ui_portal->ask_for_input("Database Name", ':', 'h');
+            std::getline(std::cin, db_name);
+
+            std::cout << std::endl << std::endl;
+            ui_portal->ask_for_input("User ID", ':', 'h');
+            std::getline(std::cin, user_id);
+
+            std::cout << std::endl << std::endl;
+            ui_portal->ask_for_input("User Passworrd", ':', 'h');
+            std::getline(std::cin, user_password);
+
+            //setting this connnectiion
+            mysql_portal->set_server_location(server_location);
+            mysql_portal->set_db_name(db_name);
+            mysql_portal->set_user_id(user_id);
+            mysql_portal->set_user_password(user_password);
+
+        }
+        else {
+            //settiing dfefault connecton
+            ui_portal->heading("Establishing Defaut Connection");
+            mysql_portal->default_address();
+        }
+
+
+        try {
+
+            mysql_portal->open_portal();
+        }
+        catch (SAException & e) {
+            ui_portal->heading("Error In Database Connection");
+            ui_portal->start_margin(' ', ' ', 'f');
+            std::cout.write(e.ErrText(), std::strlen(e.ErrText()));
+            std::cout << std::endl;
+            ui_portal->ask_for_input("ENTER to Try-Agan or ESC to go-back ", ':', 'f');
+            std::cout << std::endl << std::endl << std::endl;
+            ui_portal->seperation_line();
+
+            if (_getch() == '\r') {
+                continue;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
 }
